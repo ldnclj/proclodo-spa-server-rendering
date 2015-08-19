@@ -59,7 +59,8 @@
 
                    :source-paths ["env/dev/clj"]
                    :plugins [[lein-figwheel "0.3.7"]
-                             [lein-cljsbuild "1.0.6"]]
+                             [lein-cljsbuild "1.0.6"]
+                             [com.cemerick/clojurescript.test "0.3.3"]]
 
                    :injections [(require 'pjstadig.humane-test-output)
                                 (pjstadig.humane-test-output/activate!)]
@@ -75,8 +76,15 @@
                    :cljsbuild {:builds {:app {:source-paths ["env/dev/cljs"]
                                               :compiler {:main "proclodo-spa-server-rendering.dev"
                                                          :source-map true}}
-}
-}}
+                                        :test {:source-paths ["src/cljs"  "test/cljs"]
+                                               :compiler {:output-to "target/test.js"
+                                                          :optimizations :whitespace
+                                                          :pretty-print true}}}
+                               :test-commands {"unit" ["phantomjs" :runner
+                                                       "test/vendor/es5-shim.js"
+                                                       "test/vendor/es5-sham.js"
+                                                       "test/vendor/console-polyfill.js"
+                                                       "target/test.js"]}}}
 
              :uberjar {:hooks [leiningen.cljsbuild minify-assets.plugin/hooks]
                        :env {:production true}
