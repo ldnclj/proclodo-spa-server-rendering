@@ -22,9 +22,9 @@
   (let [port (if port (Integer/parseInt port) 3000)]
     (reset! server
             (serve (get-handler)
-                   {:port port
+                   {:port         port
                     :auto-reload? true
-                    :join? false}))
+                    :join?        false}))
     (println (str "You can view the site at http://localhost:" port))))
 
 (defn stop-server []

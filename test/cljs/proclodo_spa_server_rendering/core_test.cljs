@@ -10,9 +10,9 @@
 (def rflush reagent/flush)
 
 (defn add-test-div [name]
-  (let [doc     js/document
-        body    (.-body js/document)
-        div     (.createElement doc "div")]
+  (let [doc js/document
+        body (.-body js/document)
+        div (.createElement doc "div")]
     (.appendChild body div)
     div))
 
@@ -34,6 +34,6 @@
 
 
 (deftest test-home
-  (with-mounted-component (rc/home-page)
-    (fn [c div]
-      (is (found-in #"Welcome to" div)))))
+         (with-mounted-component (rc/home-page)
+                                 (fn [c div]
+                                   (is (found-in #"Welcome to" div)))))

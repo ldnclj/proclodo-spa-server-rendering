@@ -25,9 +25,9 @@
      (include-js "js/app.js")]]))
 
 (defroutes routes
-  (GET "/" [] home-page)
-  (resources "/")
-  (not-found "Not Found"))
+           (GET "/" [] home-page)
+           (resources "/")
+           (not-found "Not Found"))
 
 (def app
   (let [handler (wrap-defaults #'routes site-defaults)]
