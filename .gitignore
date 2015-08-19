@@ -11,3 +11,5 @@ pom.xml.asc
 /out
 /.repl
 *.log
+.idea
+proclodo_spa_server_rendering.iml
