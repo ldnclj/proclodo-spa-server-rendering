@@ -25,7 +25,7 @@
      (include-js "js/app.js")]]))
 
 (defroutes routes
-           (GET "/" [] home-page)
+           (GET "/*" [] home-page)
            (resources "/")
            (not-found "Not Found"))
 
