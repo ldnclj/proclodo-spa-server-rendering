@@ -18,19 +18,21 @@
   [:div [(session/get :current-page)]])
 
 ;; -------------------------
-;; Routes
+;; Routes and wiring
 (def routes ["/" {""      :home-page
                   "about" :about-page}])
 
-;; -------------------------
-;; Initialize app
+(def parse-path (partial bidi/match-route routes))
+
+(defn set-current-page [parsed-path]
+  (session/put! :current-page
+                (case (:handler parsed-path)
+                  :home-page #'home-page
+                  :about-page #'about-page)))
+
 (defn mount-root []
   (reagent/render [current-page] (.getElementById js/document "app")))
 
 (defn init! []
-  (pushy/start! (pushy/pushy #(session/put! :current-page
-                                            (case (:handler %)
-                                              :home-page #'home-page
-                                              :about-page #'about-page))
-                             (partial bidi/match-route routes)))
+  (pushy/start! (pushy/pushy set-current-page parse-path))
   (mount-root))
