@@ -30,9 +30,13 @@
                   :home-page #'home-page
                   :about-page #'about-page)))
 
+(defn render-page [path]
+  (set-current-page (parse-path path))
+  (reagent/render-to-string [current-page]))
+
 (defn mount-root []
   (reagent/render [current-page] (.getElementById js/document "app")))
 
-(defn init! []
+(defn init []
   (pushy/start! (pushy/pushy set-current-page parse-path))
   (mount-root))

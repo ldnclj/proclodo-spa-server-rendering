@@ -42,12 +42,19 @@
   {:assets
    {"resources/public/css/site.min.css" "resources/public/css/site.css"}}
 
-  :cljsbuild {:builds {:app {:source-paths ["src/cljs"]
-                             :compiler     {:output-to     "resources/public/js/app.js"
-                                            :output-dir    "resources/public/js/out"
-                                            :asset-path    "js/out"
-                                            :optimizations :none
-                                            :pretty-print  true}}}}
+  :cljsbuild {:builds {:app          {:source-paths ["src/cljs"]
+                                      :compiler     {;:preamble      ["react/react.min.js"]
+                                                     :output-to     "resources/public/js/app.js"
+                                                     :output-dir    "resources/public/js/app"
+                                                     :asset-path    "js/app"
+                                                     :optimizations :whitespace}}
+                       :for-figwheel {:source-paths ["src/cljs"]
+                                      :figwheel     true
+                                      :compiler     {;:preamble      ["react/react.min.js"]
+                                                     :output-to     "resources/public/js/for-figwheel.js"
+                                                     :output-dir    "resources/public/js/for-figwheel"
+                                                     :asset-path    "js/for-figwheel"
+                                                     :optimizations :none}}}}
 
   :profiles {:dev     {:repl-options {:init-ns          proclodo-spa-server-rendering.repl
                                       :nrepl-middleware []}
@@ -74,13 +81,18 @@
 
                        :env          {:dev true}
 
-                       :cljsbuild    {:builds        {:app  {:source-paths ["env/dev/cljs"]
-                                                             :compiler     {:main       "proclodo-spa-server-rendering.dev"
-                                                                            :source-map true}}
-                                                      :test {:source-paths ["src/cljs" "test/cljs"]
-                                                             :compiler     {:output-to     "target/test.js"
-                                                                            :optimizations :whitespace
-                                                                            :pretty-print  true}}}
+                       :cljsbuild    {:builds        {:app          { ;:source-paths ["env/dev/cljs"]
+                                                                     :compiler     {;:main       "proclodo-spa-server-rendering.dev"
+                                                                                    :source-map   "resources/public/js/app.js.map"
+                                                                                    :pretty-print true}}
+                                                      :for-figwheel {:source-paths ["env/dev/cljs"]
+                                                                     :compiler     {;:main       "proclodo-spa-server-rendering.dev"
+                                                                                    :source-map   "resources/public/js/for-figwheel.js.map"
+                                                                                    :pretty-print true}}
+                                                      :test         {:source-paths ["src/cljs" "test/cljs"]
+                                                                     :compiler     {:output-to     "target/test.js"
+                                                                                    :optimizations :whitespace
+                                                                                    :pretty-print  true}}}
                                       :test-commands {"unit" ["phantomjs" :runner
                                                               "test/vendor/es5-shim.js"
                                                               "test/vendor/es5-sham.js"
