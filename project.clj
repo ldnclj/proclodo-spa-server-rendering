@@ -42,20 +42,15 @@
   {:assets
    {"resources/public/css/site.min.css" "resources/public/css/site.css"}}
 
-  :cljsbuild {:builds {:app          {:source-paths ["src/cljs"]
-                                      :compiler     {;:preamble      ["react/react.min.js"]
-                                                     :output-to     "resources/public/js/app.js"
-                                                     :output-dir    "resources/public/js/app"
-                                                     :asset-path    "js/app"
-                                                     :optimizations :whitespace}}
-                       :for-figwheel {:source-paths ["src/cljs"]
-                                      :figwheel     true
-                                      :compiler     {;:preamble      ["react/react.min.js"]
-                                                     :output-to     "resources/public/js/for-figwheel.js"
-                                                     :output-dir    "resources/public/js/for-figwheel"
-                                                     :asset-path    "js/for-figwheel"
-                                                     :figwheel      true
-                                                     :optimizations :none}}}}
+  :cljsbuild {:builds {:app         {:source-paths ["src/cljs"]
+                                     :compiler     {:output-to  "resources/public/js/app.js"
+                                                    :output-dir "resources/public/js/app"
+                                                    :asset-path "js/app"}}
+                       :server-side {:source-paths ["src/cljs"]
+                                     :compiler     {:output-to     "resources/public/js/server-side.js"
+                                                    :output-dir    "resources/public/js/server-side"
+                                                    :asset-path    "js/server-side"
+                                                    :optimizations :whitespace}}}} ; :whitespace optimization is needed for server side execution.
 
   :profiles {:dev     {:repl-options {:init-ns          proclodo-spa-server-rendering.repl
                                       :nrepl-middleware []}
@@ -82,18 +77,19 @@
 
                        :env          {:dev true}
 
-                       :cljsbuild    {:builds        {:app          {;:source-paths ["env/dev/cljs"]
-                                                                     :compiler {;:main       "proclodo-spa-server-rendering.dev"
-                                                                                :source-map   true
-                                                                                :pretty-print true}}
-                                                      :for-figwheel {:source-paths ["env/dev/cljs"]
-                                                                     :compiler     {:main         "proclodo-spa-server-rendering.dev"
-                                                                                    :source-map   true
-                                                                                    :pretty-print true}}
-                                                      :test         {:source-paths ["src/cljs" "test/cljs"]
-                                                                     :compiler     {:output-to     "target/test.js"
-                                                                                    :optimizations :whitespace
-                                                                                    :pretty-print  true}}}
+                       :cljsbuild    {:builds        {:app         {:source-paths ["env/dev/cljs"]
+                                                                    :compiler     {:optimizations :none
+                                                                                   :source-map    true
+                                                                                   :pretty-print  true
+                                                                                   :figwheel      true
+                                                                                   :main          "proclodo-spa-server-rendering.dev"}}
+                                                      :server-side {:compiler {:optimizations :advanced
+                                                                               :source-map    "resources/public/js/server-side.js.map"
+                                                                               :pretty-print  true}}
+                                                      :test        {:source-paths ["src/cljs" "test/cljs"]
+                                                                    :compiler     {:output-to     "target/test.js"
+                                                                                   :optimizations :whitespace
+                                                                                   :pretty-print  true}}}
                                       :test-commands {"unit" ["phantomjs" :runner
                                                               "test/vendor/es5-shim.js"
                                                               "test/vendor/es5-sham.js"
@@ -105,8 +101,11 @@
                        :aot         :all
                        :omit-source true
                        :cljsbuild   {:jar    true
-                                     :builds {:app
-                                              {:source-paths ["env/prod/cljs"]
-                                               :compiler
-                                                             {:optimizations :advanced
-                                                              :pretty-print  false}}}}}})
+                                     :builds {:app         {:source-paths ["env/prod/cljs"]
+                                                            :compiler     {:optimizations :advanced
+                                                                           :pretty-print  false
+                                                                           :source-map    false}}
+                                              :server-side {:source-paths ["env/prod/cljs"]
+                                                            :compiler     {:optimizations :advanced
+                                                                           :pretty-print  false
+                                                                           :source-map    false}}}}}})
