@@ -103,9 +103,7 @@
                        :cljsbuild   {:jar    true
                                      :builds {:app         {:source-paths ["env/prod/cljs"]
                                                             :compiler     {:optimizations :advanced
-                                                                           :pretty-print  false
-                                                                           :source-map    false}}
+                                                                           :pretty-print  false}}
                                               :server-side {:source-paths ["env/prod/cljs"]
                                                             :compiler     {:optimizations :advanced
-                                                                           :pretty-print  false
-                                                                           :source-map    false}}}}}})
+                                                                           :pretty-print  false}}}}}})
