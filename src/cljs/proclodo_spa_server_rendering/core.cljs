@@ -22,13 +22,18 @@
 (def routes ["/" {""      :home-page
                   "about" :about-page}])
 
-(def parse-path (partial bidi/match-route routes))
+(defn parse-path [path]
+  (let [parsed-path (bidi/match-route routes path)]
+    (if parsed-path
+      parsed-path
+      (throw (js/Error. (str "Path not recognized: " (pr-str path)))))))
 
 (defn set-current-page [parsed-path]
   (session/put! :current-page
                 (case (:handler parsed-path)
                   :home-page #'home-page
-                  :about-page #'about-page)))
+                  :about-page #'about-page
+                  (throw (js/Error. (str "Parsed path not recognized: " (pr-str parsed-path)))))))
 
 (defn ^:export render-page [path]
   (set-current-page (parse-path path))
