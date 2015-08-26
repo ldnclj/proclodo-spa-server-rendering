@@ -32,7 +32,7 @@
         (include-css (if (env :dev) "css/site.css" "css/site.min.css"))]
        [:body
         [:div#app page-content]
-        (include-js "js/app.js")
+        (include-js "js/for-figwheel.js")
         [:script {:type "text/javascript"} "proclodo_spa_server_rendering.core.init()"]]])))
 
 (defroutes routes

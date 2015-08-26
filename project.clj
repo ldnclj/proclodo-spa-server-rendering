@@ -54,6 +54,7 @@
                                                      :output-to     "resources/public/js/for-figwheel.js"
                                                      :output-dir    "resources/public/js/for-figwheel"
                                                      :asset-path    "js/for-figwheel"
+                                                     :figwheel      true
                                                      :optimizations :none}}}}
 
   :profiles {:dev     {:repl-options {:init-ns          proclodo-spa-server-rendering.repl
@@ -81,13 +82,13 @@
 
                        :env          {:dev true}
 
-                       :cljsbuild    {:builds        {:app          { ;:source-paths ["env/dev/cljs"]
-                                                                     :compiler     {;:main       "proclodo-spa-server-rendering.dev"
-                                                                                    :source-map   "resources/public/js/app.js.map"
-                                                                                    :pretty-print true}}
+                       :cljsbuild    {:builds        {:app          {;:source-paths ["env/dev/cljs"]
+                                                                     :compiler {;:main       "proclodo-spa-server-rendering.dev"
+                                                                                :source-map   true
+                                                                                :pretty-print true}}
                                                       :for-figwheel {:source-paths ["env/dev/cljs"]
-                                                                     :compiler     {;:main       "proclodo-spa-server-rendering.dev"
-                                                                                    :source-map   "resources/public/js/for-figwheel.js.map"
+                                                                     :compiler     {:main         "proclodo-spa-server-rendering.dev"
+                                                                                    :source-map   true
                                                                                     :pretty-print true}}
                                                       :test         {:source-paths ["src/cljs" "test/cljs"]
                                                                      :compiler     {:output-to     "target/test.js"
