@@ -15,7 +15,7 @@
    [:div [:a {:href "/"} "go to the home page"]]])
 
 (defn current-page []
-  [:div [(session/get :current-page)]])
+  [(session/get :current-page)])
 
 ;; -------------------------
 ;; Routes and wiring
@@ -23,21 +23,16 @@
                   "about" :about-page}])
 
 (defn parse-path [path]
-  (let [parsed-path (bidi/match-route routes path)]
-    (if parsed-path
-      parsed-path
-      (throw (js/Error. (str "Path not recognized: " (pr-str path)))))))
+  (case (:handler (bidi/match-route routes path))
+    :home-page #'home-page
+    :about-page #'about-page
+    (throw (js/Error. (str "Path not recognized: " (pr-str path))))))
 
 (defn set-current-page [parsed-path]
-  (session/put! :current-page
-                (case (:handler parsed-path)
-                  :home-page #'home-page
-                  :about-page #'about-page
-                  (throw (js/Error. (str "Parsed path not recognized: " (pr-str parsed-path)))))))
+  (session/put! :current-page parsed-path))
 
 (defn ^:export render-page [path]
-  (set-current-page (parse-path path))
-  (reagent/render-to-string [current-page]))
+  (reagent/render-to-string [(parse-path path)]))
 
 (defn mount-root []
   (reagent/render [current-page] (.getElementById js/document "app")))
