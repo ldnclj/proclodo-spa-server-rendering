@@ -35,11 +35,14 @@
         (include-js "js/app.js")
         [:script {:type "text/javascript"} "proclodo_spa_server_rendering.core.init()"]]])))
 
+(defn- path [request]
+  (str (:uri request)                                       ; Build the path the same way ring.util.request/request-url does it: https://github.com/ring-clojure/ring/blob/1.4.0/ring-core/src/ring/util/request.clj#L5
+       (if-let [query (:query-string request)]
+         (str "?" query))))
+
 (defroutes routes
            (GET "*" request
-             (render-app (str (:uri request)                ; Build the path the same way ring.util.request/request-url does it: https://github.com/ring-clojure/ring/blob/1.4.0/ring-core/src/ring/util/request.clj#L5
-                              (if-let [query (:query-string request)]
-                                (str "?" query)))))
+             (render-app (path request)))
            (resources "/")
            (not-found "Not Found"))
 
