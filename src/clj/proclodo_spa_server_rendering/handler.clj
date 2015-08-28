@@ -35,10 +35,10 @@
                                 (println "Using enigne:" js-engine)
                                 (try
                                   (.invokeMethod
-                                   ^Invocable js-engine
-                                   (.eval js-engine "proclodo_spa_server_rendering.core")
-                                   "render_page"
-                                   (object-array [path]))
+                                    ^Invocable js-engine
+                                    (.eval js-engine "proclodo_spa_server_rendering.core")
+                                    "render_page"
+                                    (object-array [path]))
                                   (finally (pool/release js-engine-pool js-engine-key js-engine)))))]
     (html
       [:html
