@@ -21,13 +21,15 @@
                io/resource
                io/reader))))
 
-(def js-engine-pool (pool/instrumented-pool {:generate   (fn [_]
-                                                           (println "Creating new js-engine")
-                                                           (let [js-engine (create-js-engine)]
-                                                             (println "js-engine created:" js-engine)
-                                                             js-engine))
-                                             :controller (Pools/fixedController 10000 10000)}))
 (def js-engine-key "js-engine")                             ; We have one and only one key in the pool, it's a constant.
+(def js-engine-pool (pool/instrumented-pool {:generate       (fn [_]
+                                                               (println "Creating new js-engine")
+                                                               (let [js-engine (create-js-engine)]
+                                                                 (println "js-engine created:" js-engine)
+                                                                 js-engine))
+                                             :controller     (Pools/fixedController 10000 10000)
+                                             :stats-callback (fn [stats]
+                                                               (println "js-engine-pool number of workers:" (get-in stats [js-engine-key :num-workers] 0)))}))
 
 (defn- render-app [path]
   (println "Rendering:" path)
