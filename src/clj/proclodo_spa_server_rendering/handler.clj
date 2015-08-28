@@ -27,10 +27,11 @@
                                                              (println "js-engine created:" js-engine)
                                                              js-engine))
                                              :controller (Pools/fixedController 10000 10000)}))
+(def js-engine-key "js-engine")                             ; We have one and only one key in the pool, it's a constant.
 
 (defn- render-app [path]
   (println "Rendering:" path)
-  (letfn [(render-page [path] (let [js-engine @(pool/acquire js-engine-pool "js-engine")]
+  (letfn [(render-page [path] (let [js-engine @(pool/acquire js-engine-pool js-engine-key)]
                                 (println "Using enigne:" js-engine)
                                 (try
                                   (.invokeMethod
@@ -38,7 +39,7 @@
                                    (.eval js-engine "proclodo_spa_server_rendering.core")
                                    "render_page"
                                    (object-array [path]))
-                                  (finally (pool/release js-engine-pool "js-engine" js-engine)))))]
+                                  (finally (pool/release js-engine-pool js-engine-key js-engine)))))]
     (html
       [:html
        [:head
