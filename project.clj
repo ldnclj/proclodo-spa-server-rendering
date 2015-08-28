@@ -21,7 +21,8 @@
                  [org.clojure/clojurescript "1.7.107" :scope "provided"]
                  [bidi "1.20.3"]
                  [kibu/pushy "0.3.2"]
-                 [aleph "0.4.0"]]
+                 [aleph "0.4.0"]
+                 [yleisradio/new-reliquary "0.1.5"]]
 
   :plugins [[lein-environ "1.0.0"]
             [lein-asset-minifier "0.2.2"]]

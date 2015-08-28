@@ -3,6 +3,8 @@
             [compojure.core :refer [GET defroutes]]
             [compojure.route :refer [not-found resources]]
             [ring.middleware.defaults :refer [site-defaults wrap-defaults]]
+            [new-reliquary.ring :refer [wrap-newrelic-transaction]]
+            [ring.middleware.params :refer [wrap-params]]
             [hiccup.core :refer [html]]
             [hiccup.page :refer [include-js include-css]]
             [prone.middleware :refer [wrap-exceptions]]
@@ -67,4 +69,9 @@
 
 (def app
   (let [handler (wrap-defaults #'routes site-defaults)]
-    (if (env :dev) (-> handler wrap-exceptions wrap-reload) handler)))
+    (if (env :dev)
+      (-> handler
+          wrap-exceptions
+          wrap-reload)
+      (wrap-params
+        (wrap-newrelic-transaction "my transaction category" handler)))))
