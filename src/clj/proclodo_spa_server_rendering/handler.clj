@@ -73,5 +73,6 @@
       (-> handler
           wrap-exceptions
           wrap-reload)
-      (wrap-params
-        (wrap-newrelic-transaction "my transaction category" handler)))))
+      (-> handler
+          (wrap-newrelic-transaction "my transaction category")
+          wrap-params))))
