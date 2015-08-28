@@ -30,7 +30,7 @@
 
 (defn- render-app [path]
   (println "Rendering:" path)
-  (letfn [(render-page [path] (let [js-engine @(pool/acquire js-engine-pool "")]
+  (letfn [(render-page [path] (let [js-engine @(pool/acquire js-engine-pool "js-engine")]
                                 (println "Using enigne:" js-engine)
                                 (try
                                   (.invokeMethod
@@ -38,7 +38,7 @@
                                    (.eval js-engine "proclodo_spa_server_rendering.core")
                                    "render_page"
                                    (object-array [path]))
-                                  (finally (pool/release js-engine-pool "" js-engine)))))]
+                                  (finally (pool/release js-engine-pool "js-engine" js-engine)))))]
     (html
       [:html
        [:head
