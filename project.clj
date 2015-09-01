@@ -27,6 +27,8 @@
   :plugins [[lein-environ "1.0.0"]
             [lein-asset-minifier "0.2.2"]]
 
+  :java-agents [[com.newrelic.agent.java/newrelic-agent "3.19.2"]]
+
   :ring {:handler      proclodo-spa-server-rendering.handler/app
          :uberwar-name "proclodo-spa-server-rendering.war"}
 
