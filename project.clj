@@ -27,6 +27,7 @@
   :plugins [[lein-environ "1.0.0"]
             [lein-asset-minifier "0.2.2"]
             [jar-copier "0.1.0"]]
+  :prep-tasks ["javac" "compile" "jar-copier"]
 
   :java-agents [[com.newrelic.agent.java/newrelic-agent "3.20.0"]]
   :jar-copier {:java-agents true
