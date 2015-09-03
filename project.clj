@@ -25,9 +25,12 @@
                  [yleisradio/new-reliquary "0.1.5"]]
 
   :plugins [[lein-environ "1.0.0"]
-            [lein-asset-minifier "0.2.2"]]
+            [lein-asset-minifier "0.2.2"]
+            [jar-copier "0.1.0"]]
 
-  :java-agents [[com.newrelic.agent.java/newrelic-agent "3.19.2"]]
+  :java-agents [[com.newrelic.agent.java/newrelic-agent "3.20.0"]]
+  :jar-copier {:java-agents true
+               :destination "resources/jars"}
 
   :ring {:handler      proclodo-spa-server-rendering.handler/app
          :uberwar-name "proclodo-spa-server-rendering.war"}
