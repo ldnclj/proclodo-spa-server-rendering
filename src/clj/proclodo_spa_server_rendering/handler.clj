@@ -35,15 +35,15 @@
 
 (defn- render-app [path]
   (println "Rendering:" path)
-  (letfn [(render-page [path] (let [js-engine @(pool/acquire js-engine-pool js-engine-key)]
-                                (println "Using enigne:" js-engine)
-                                (try
-                                  (.invokeMethod
-                                    ^Invocable js-engine
-                                    (.eval js-engine "proclodo_spa_server_rendering.core")
-                                    "render_page"
-                                    (object-array [path]))
-                                  (finally (pool/release js-engine-pool js-engine-key js-engine)))))]
+  (letfn [(render-page [path] #_(let [js-engine @(pool/acquire js-engine-pool js-engine-key)]
+                                  (println "Using enigne:" js-engine)
+                                  (try
+                                    (.invokeMethod
+                                      ^Invocable js-engine
+                                      (.eval js-engine "proclodo_spa_server_rendering.core")
+                                      "render_page"
+                                      (object-array [path]))
+                                    (finally (pool/release js-engine-pool js-engine-key js-engine)))))]
     (html
       [:html
        [:head
@@ -52,7 +52,7 @@
                 :content "width=device-width, initial-scale=1"}]
         (include-css (if (env :dev) "css/site.css" "css/site.min.css"))]
        [:body
-        [:div#app (render-page path)]
+        [:div#app #_(render-page path)]
         (include-js "js/app.js")
         [:script {:type "text/javascript"} "proclodo_spa_server_rendering.core.init()"]]])))
 
