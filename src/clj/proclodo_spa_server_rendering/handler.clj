@@ -74,5 +74,5 @@
           wrap-exceptions
           wrap-reload)
       (-> handler
-          (wrap-newrelic-transaction "Web")
-          wrap-params))))
+          wrap-params
+          (wrap-newrelic-transaction "Web")))))
