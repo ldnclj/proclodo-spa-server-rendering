@@ -75,4 +75,4 @@
           wrap-reload)
       (-> handler
           wrap-params
-          (wrap-newrelic-transaction "Web")))))
+          (wrap-newrelic-transaction nil)))))
